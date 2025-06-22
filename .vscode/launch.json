@@ -1,0 +1,58 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug All Tests",
+            "request": "launch",
+            "mainClass": "org.junit.platform.console.ConsoleLauncher",
+            "projectName": "calclib",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--class-path",
+                "${workspaceFolder}/target/test-classes:${workspaceFolder}/target/classes",
+                "--scan-class-path"
+            ],
+            "vmArgs": [],
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "preLaunchTask": "compile-tests"
+        },
+        {
+            "type": "java", 
+            "name": "Debug CalcInterestTest",
+            "request": "launch",
+            "mainClass": "org.junit.platform.console.ConsoleLauncher",
+            "projectName": "calclib",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--class-path",
+                "${workspaceFolder}/target/test-classes:${workspaceFolder}/target/classes",
+                "--select-class",
+                "am.calclib.CalcInterestTest"
+            ],
+            "vmArgs": [],
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "preLaunchTask": "compile-tests"
+        },
+        {
+            "type": "java",
+            "name": "Debug Single Test Method",
+            "request": "launch",
+            "mainClass": "org.junit.platform.console.ConsoleLauncher",
+            "projectName": "calclib", 
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--class-path",
+                "${workspaceFolder}/target/test-classes:${workspaceFolder}/target/classes",
+                "--select-method",
+                "am.calclib.CalcInterestTest#calculateInterest_success"
+            ],
+            "vmArgs": [],
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "preLaunchTask": "compile-tests"
+        }
+    ]
+}
