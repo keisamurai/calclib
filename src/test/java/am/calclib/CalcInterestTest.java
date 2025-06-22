@@ -1,46 +1,95 @@
 package am.calclib;
 
-import static am.calclib.CommonConfigs.DEFAULT_SCALE;
-import static am.calclib.CommonConfigs.ROUNDING_MODE;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
+import java.util.List;
 
 public class CalcInterestTest {
     CalcInterest c = new CalcInterest();
 
     @Test
     public void calculateInterest_success() {
-        BigDecimal rate = new BigDecimal("0.05");
-        BigDecimal expected = new BigDecimal("0.50");
-        BigDecimal actual = c.calculateInterest(rate, 10);
+        double rate = 0.05;
+        double expected = 0.50;
+        double actual = c.interest(rate, 10);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actual, 0.0001);
+    }
+
+    @Test
+    public void timeWeightedRateOfReturn_success() {
+        List<InvestmentRecord> records = List.of(
+            new InvestmentRecord(10.0, 0.0),
+            new InvestmentRecord(10.0, 1.0),
+            new InvestmentRecord(40.0, -4.0)
+        );
+
+        double expected = -0.01;
+        double actual = c.timeWeightedRateOfReturn(records);
+
+        assertEquals(expected, actual, 0.0001);
     }
 
     @Test
     public void calculateCompoundInterest_5p_10y() {
-        BigDecimal rate = new BigDecimal("0.05");
+        double rate = 0.05;
         Integer term = 10;
 
-        BigDecimal compoundInterest = c.calculateCompoundInterest(rate, term);
-        BigDecimal rounded = compoundInterest.setScale(DEFAULT_SCALE, ROUNDING_MODE);
-        double expected = 0.6289;
-        double actual = rounded.doubleValue();
 
-        assertEquals(expected, actual);
+        double compoundInterest = c.compoundInterest(rate, term);
+        double expected = 0.6289;
+
+        assertEquals(expected, compoundInterest, 0.0001);
     }
 
     @Test
     public void calculateCompoundInterest_5p_20y() {
-        BigDecimal rate = new BigDecimal("0.05");
+        double rate = 0.05;
         Integer term = 20;
 
-        BigDecimal compoundInterest = c.calculateCompoundInterest(rate, term);
-        BigDecimal rounded = compoundInterest.setScale(DEFAULT_SCALE, ROUNDING_MODE);
+        double compoundInterest = c.compoundInterest(rate, term);
         double expected = 1.6533;
-        double actual = rounded.doubleValue();
 
-        assertEquals(expected, actual);
+        assertEquals(expected, compoundInterest, 0.0001);
+    }
+
+
+    @Test
+    public void genometricLinkRateOfReturn_success() {
+        List<Double> rates = List.of(
+            0.02,
+            0.03
+        );
+
+        double expected = 0.0506;
+        double actual = c.genometricLinkRateOfReturn(rates);
+
+        assertEquals(expected, actual, 0.0001);
+    }
+
+
+    @Test
+    public void genometricLinkRateOfReturn_minus_rates_success() {
+        List<Double> rates = List.of(
+            0.0126,
+            -0.0207,
+            0.0184
+        );
+
+        double expected = 0.0099;
+        double actual = c.genometricLinkRateOfReturn(rates);
+
+        assertEquals(expected, actual, 0.0001);
+    }
+
+    @Test
+    public void genometricLinkRateOfReturn_emptyList() {
+        List<Double> rates = List.of();
+
+        double expected = 0.0;
+        double actual = c.genometricLinkRateOfReturn(rates);
+
+        assertEquals(expected, actual, 0.0001);
     }
 }

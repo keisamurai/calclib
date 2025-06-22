@@ -55,3 +55,4 @@ Tests use JUnit 5 (Jupiter) and are located in src/test/java/am/calclib/. When a
 
 ## DEV Rule
 - After modifying the resource, run `mvn test` to verify that the verification passes.
+- use java17. export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
