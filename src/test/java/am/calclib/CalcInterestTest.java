@@ -1,5 +1,6 @@
 package am.calclib;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -34,6 +35,7 @@ public class CalcInterestTest {
     public void calculateCompoundInterest_5p_10y() {
         double rate = 0.05;
         Integer term = 10;
+
 
         double compoundInterest = c.compoundInterest(rate, term);
         double expected = 0.6289;

@@ -2,6 +2,7 @@ package am.calclib;
 
 import java.util.List;
 
+
 // 投資記録を表すレコードクラス
 // 投資額と利益を保持
 record InvestmentRecord(double amount, double profit){}
