@@ -1,37 +1,52 @@
 package am.calclib;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import static am.calclib.CommonUtils.checkInput;
-import static am.calclib.CommonConfigs.*;
+// 投資記録を表すレコードクラス
+// 投資額と利益を保持
+record InvestmentRecord(double amount, double profit){}
 
 public class CalcInterest {
 
-    public BigDecimal calculateRateOfReturn(BigDecimal initialInvestment, BigDecimal finalValue) {
-        checkInput(initialInvestment, finalValue);
-        return finalValue.subtract(initialInvestment)
-                .divide(initialInvestment, DEFAULT_SCALE, ROUNDING_MODE);
+    // 単純収益率
+    public double rateOfReturn(double initialInvestment, double finalValue) {
+        return (finalValue - initialInvestment) / initialInvestment;
     }
 
-    public BigDecimal calculateInterest(BigDecimal rate, Integer term) {
-        checkInput(rate, term);
-        return rate.multiply(BigDecimal.valueOf(term));
+    public double rateOfReturnWithProfit(double initialInvestment, double profit) {
+        return profit / initialInvestment;
     }
 
-    public BigDecimal calculateCompoundInterest(BigDecimal rate, Integer term) {
-        checkInput(rate, term);
-        return BigDecimal.ONE.add(rate).pow(term).subtract(BigDecimal.ONE);
+    // 累積収益率
+    public double cumulativeReturn(List<InvestmentRecord> records) {
+        double cr = 1.0;
+        for (InvestmentRecord record : records) {
+            cr *= (1 + rateOfReturnWithProfit(record.amount(), record.profit()));
+        }
+        return cr;
     }
 
-    public BigDecimal genometricLinkRateOfReturn(List<BigDecimal> rates) {
-        checkInput(rates.toArray());
+    // 時間加重平均収益率
+    // Time Weighted Rate of Return (TWRR)
+    // 収益の大きさを無視し、所与の投資金額に対する収益率を計算する
+    public double timeWeightedRateOfReturn(List<InvestmentRecord> records) {
+        return cumulativeReturn(records) - 1.0;
+    }
 
-        BigDecimal product = BigDecimal.ONE;
-        for (BigDecimal rate : rates) {
-            product = product.multiply(BigDecimal.ONE.add(rate));
+    public double interest(double rate, Integer term) {
+        return rate * term;
+    }
+
+    public double compoundInterest(double rate, Integer term) {
+        return Math.pow(1.0 + rate, term) - 1.0;
+    }
+
+    public double genometricLinkRateOfReturn(List<Double> rates) {
+        double product = 1.0;
+        for (double rate : rates) {
+            product *= (1.0 + rate);
         }
 
-        return product.subtract(BigDecimal.ONE).setScale(DEFAULT_SCALE, ROUNDING_MODE);
+        return product - 1.0;
     }
 }
