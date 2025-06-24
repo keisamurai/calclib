@@ -1,6 +1,7 @@
 package am.calclib;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 // 投資記録を表すレコードクラス
@@ -8,6 +9,10 @@ import java.util.List;
 record InvestmentRecord(double amount, double profit){}
 
 public class CalcInterest {
+
+    // -----------
+    // 収益率関連
+    // -----------
 
     // 単純収益率
     public double rateOfReturn(double initialInvestment, double finalValue) {
@@ -34,6 +39,9 @@ public class CalcInterest {
         return cumulativeReturn(records) - 1.0;
     }
 
+    // -----------
+    // 利率関連
+    // -----------
     public double interest(double rate, Integer term) {
         return rate * term;
     }
@@ -49,5 +57,31 @@ public class CalcInterest {
         }
 
         return product - 1.0;
+    }
+
+    // ---------
+    // 統計値関連
+    // ---------
+    public double average(List<Double> values) {
+        if (values.isEmpty()) {
+            return 0.0;
+        }
+
+        double sum = 0.0;
+        for (double value : values) {
+            sum += value;
+        }
+
+        return sum / values.size();
+    }
+
+    public double weightedAverage(List<Double> values, List<Double> weights) {
+        if (values.isEmpty() || weights.isEmpty() || values.size() != weights.size()) {
+            return 0.0;
+        }
+
+        return IntStream.range(0, values.size())
+                .mapToDouble(i -> values.get(i) * weights.get(i))
+                .sum();
     }
 }

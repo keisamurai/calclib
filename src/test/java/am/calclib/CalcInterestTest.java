@@ -92,4 +92,23 @@ public class CalcInterestTest {
 
         assertEquals(expected, actual, 0.0001);
     }
+
+    @Test
+    public void average_success() {
+        List<Double> values = List.of(1.0, 2.0, 3.0, 4.0, 5.0);
+        double expected = 3.0;
+        double actual = c.average(values);
+
+        assertEquals(expected, actual, 0.0001);
+    }
+
+    @Test
+    public void weightedAverage_success() {
+        List<Double> values = List.of(1300.0, 1000.0, 1200.0, 1100.0, 400.0);
+        List<Double> weights = List.of(0.1, 0.15, 0.1, 0.15, 0.5);
+        double expected = 765.0;
+        double actual = c.weightedAverage(values, weights);
+
+        assertEquals(expected, actual, 0.0001);
+    }
 }
